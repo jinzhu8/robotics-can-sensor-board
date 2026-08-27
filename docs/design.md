@@ -29,6 +29,7 @@ Performance reqs:
 
 
 ## 3. System Architecture
+Pimoroni's Servo 2040 was used as a reference architecture because it combines an RP2040 with servo outputs, analog sensor inputs, USB connectivity, and power/current monitoring in a platform intended for robotic applications. The project will implement the required functionality on a custom PCB rather than using the Servo 2040 directly.
                 ┌─────────────────┐
                 │   User Input    │
                 │ Target Force    │
@@ -55,6 +56,9 @@ Performance reqs:
 ### 4.1 Force Sensor
 
 The initial force sensor selected for the gripper is the Interlink FSR 402. It was selected because it is a thin, two-wire analog force sensor with a specified sensing range of approximately 0.2–20 N, making it suitable for detecting and controlling gripping force without requiring a complex bridge-based measurement circuit; its resistance-force relationship is nonlinear and exhibits saturation and hysteresis.
+### 4.2 Microcontroller
+The RP2040 was selected as the primary microcontroller for the gripper controller. It provides sufficient processing performance, GPIO, a built-in 12-bit ADC, and USB connectivity for communication and data logging.
+The RP2040 was chosen over a more feature-rich wireless microcontroller because the project does not require wireless connectivity. Although the RP2040 ADC is nominally 12-bit, its effective resolution is lower, so the design will not assume 12-bit accuracy in the force measurement.
 
 ## 5. Circuit Design
 Power:
@@ -69,6 +73,9 @@ V_{sense}=V_{CC}\frac{R_{FIXED}}{R_{FSR}+R_{FIXED}}
 An initial fixed resistance of 10 kΩ will be evaluated for the divider. The resulting voltage is read by the microcontroller ADC and used as the feedback signal for the gripper force controller. The final resistor value and any additional filtering or signal conditioning will be determined after selecting the microcontroller/ADC and evaluating the expected sensor operating range.
 
 MCU and interfaces: 
+- Selected the RP2040 as the project microcontroller.
+- Chosen for its integrated ADC, USB connectivity, GPIO, processing capability, and available hardware documentation.
+- The design will account for the ADC's effective resolution rather than assuming ideal 12-bit performance.
 
 Motor driver:
 
