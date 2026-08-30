@@ -1,4 +1,4 @@
-# Adaptive Robotic Gripper
+N# Adaptive Robotic Gripper
 
 ## 1. Project Overview
 
@@ -46,19 +46,22 @@ Pimoroni's Servo 2040 was used as a reference architecture because it combines a
                                         │ Actuator  │
                                         └───────────┘
 ## 4. Component Selection
-| Component       | Selected Part | Reason                                       |
+| Component       | Selected Part | Reason |
 | --------------- | ------------- | -------------------------------------------- |
-| MCU             | TBD           | Processing, ADC/interface, control loop, USB |
-| Force sensor    | TBD           | Required force range/interface               |
+| MCU             | RP2040        | Processing, ADC/interface, control loop, USB |
+| Force sensor    | Interlink FSR 402 | Thin analog force sensor with suitable sensing range |
+| External flash  | W25Q32JVSS    | 4 MB QSPI storage; practical SOIC-8 package |
 | Motor driver    | TBD           | Compatible with gripper actuator             |
-| Power regulator | TBD           | Required voltage/current                     |
-| USB interface   | TBD           | Data logging/communication                   |
-### 4.1 Force Sensor
+| Power regulator | NCP1117-3.3 (SOT-223) | 3.3 V logic supply with substantial current margin |
+| USB interface   | USB-C + USBLC6-2SC6 | USB communication and ESD protection |
 
+### 4.1 Force Sensor
 The initial force sensor selected for the gripper is the Interlink FSR 402. It was selected because it is a thin, two-wire analog force sensor with a specified sensing range of approximately 0.2–20 N, making it suitable for detecting and controlling gripping force without requiring a complex bridge-based measurement circuit; its resistance-force relationship is nonlinear and exhibits saturation and hysteresis.
 ### 4.2 Microcontroller
 The RP2040 was selected as the primary microcontroller for the gripper controller. It provides sufficient processing performance, GPIO, a built-in 12-bit ADC, and USB connectivity for communication and data logging.
 The RP2040 was chosen over a more feature-rich wireless microcontroller because the project does not require wireless connectivity. Although the RP2040 ADC is nominally 12-bit, its effective resolution is lower, so the design will not assume 12-bit accuracy in the force measurement.
+### 4.3 External Flash
+The W25Q32JVSS was selected as the RP2040's external QSPI flash memory. Its 32 Mbit (4 MB) capacity is sufficient for the firmware and application data required by the project. The SOIC-8 package was selected as a practical balance between PCB area and ease of assembly.
 
 ## 5. Circuit Design
 Power:
